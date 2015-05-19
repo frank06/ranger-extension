@@ -8,9 +8,9 @@ Works on Chrome.
 
 Install extension.
 
-Select text. Hit 'H' key to highlight.
+Select text. Hit `H` key to highlight.
 
-To remove a highlight, click on it and hit 'H' again.
+To remove a highlight, click on it and hit `H` again.
 
 Highlights will be kept in local storage.
 
