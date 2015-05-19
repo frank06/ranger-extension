@@ -63,12 +63,31 @@ document.onkeyup = function(e) {
 
 var addRange = function(range) {
   
-  chrome.storage.local.get(window.location.href, function(storage) {
+  var href = window.location.href;
+  
+  chrome.storage.local.get(href, function(storage) {
     
-    storage[window.location.href] = storage[window.location.href] || {};
+    storage[href] = storage[href] || {};
     
-    storage[window.location.href][range.id] = range;
+    storage[href][range.id] = range;
     chrome.storage.local.set(storage);
+    
+    // var oReq = new XMLHttpRequest();
+    // oReq.onload = function () {
+    //   console.log(this.responseText);
+    // };
+    // oReq.open("PUT", "http://localhost:3000/frank/", true);
+    // oReq.send();
+    
+    var site = encodeURIComponent(window.btoa(href));
+    
+    var req = new XMLHttpRequest();
+    req.open("PUT", ["http://localhost:3000/frank", site, range.id].join('/'));
+    req.onload = function () {
+      console.log(this.responseText);
+    }
+    req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    req.send(JSON.stringify(range));
     
   });
   
@@ -76,11 +95,23 @@ var addRange = function(range) {
 
 var removeRange = function(id) {
   
-  chrome.storage.local.get(window.location.href, function(storage) {
+  var href = window.location.href;
+  
+  chrome.storage.local.get(href, function(storage) {
     
-    delete storage[window.location.href][id]; 
+    delete storage[href][id];
     
     chrome.storage.local.set(storage);
+    
+    var site = encodeURIComponent(window.btoa(href));
+    
+    var req = new XMLHttpRequest();
+    req.open("DELETE", ["http://localhost:3000/frank", site, id].join('/'));
+    req.onload = function () {
+      console.log(this.responseText);
+    }
+    req.send();
+    
     
   });
   
